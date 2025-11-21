@@ -1,35 +1,58 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# 📦KommonVersions (KMP Common Versions Plugin)
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+### A Unified Versioning, Flavor, and Build Metadata System for Kotlin Multiplatform (Android + iOS)
 
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+This repository contains a **custom Gradle convention plugin** that provides a **single source of
+truth** for versioning, flavors, schemas, application IDs, and runtime build metadata across *
+*Android** and **iOS** in Kotlin Multiplatform projects.
 
-### Build and Run Android Application
+Instead of manually maintaining:
 
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
+- Android BuildConfig
+- iOS Info.plist keys
+- xcconfig files
+- duplicated version codes
+- flavor/schema naming rules
+- separate app names
+- custom suffixes per environment
 
-### Build and Run iOS Application
+…this plugin generates **everything automatically** based on a single clean DSL:
 
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+```kotlin
+kommonVersions {
+    val appVersionCode = libs.versions.version.code.get().toIntOrNull() ?: 1
+    val appVersionName = libs.versions.version.name.get()
+    val appPackageName = libs.versions.application.id.get()
+    android = android {
+        namespace = appPackageName
+        versionCode = appVersionCode
+        versionName = appVersionName
+        flavorDimensions += "default"
+        flavors += flavor {
+            name = "dev"
+            dimension = "default"
+            versionNameSuffix = "-dev"
+            appName = "KmpVersion"
+            appNameSuffix = "Develop"
+            applicationIdSuffix = ".dev"
+        }
+        flavors += flavor {
+            name = "prd"
+            dimension = "default"
+            appName = "KmpVersion"
+        }
+    }
+    ios = ios {
+        projectFolderName = "iosApp"
+        appName = "KmpVersion"
+        bundleId = appPackageName
+        marketingVersion = appVersionName
+        currentVersion = appVersionCode.toString()
+        schemas += schema {
+            bundleSuffix = "dev"
+            name = "development"
+            nameSuffix = "Develop"
+        }
+    }
 
----
-
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+}
