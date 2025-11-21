@@ -35,7 +35,7 @@ gradlePlugin {
     plugins {
         register("kmpCommonVersion") {
             id = "com.mohaberabi.kmp.commonversion"
-            implementationClass = "CommonVersionConventionPlugin"
+            implementationClass = "KommonVersionExtension"
         }
     }
 }

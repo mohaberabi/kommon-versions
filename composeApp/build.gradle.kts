@@ -83,7 +83,7 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
-commonVersions {
+kommonVersions {
     val appVersionCode = libs.versions.version.code.get().toIntOrNull() ?: 1
     val appVersionName = libs.versions.version.name.get()
     val appPackageName = libs.versions.application.id.get()

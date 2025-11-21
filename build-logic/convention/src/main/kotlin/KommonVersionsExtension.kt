@@ -4,7 +4,7 @@ import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import javax.inject.Inject
 
-abstract class CommonVersionsExtension @Inject constructor(
+abstract class KommonVersionsExtension @Inject constructor(
     objects: ObjectFactory
 ) {
     val ios: Property<IosConfig?> = objects.property(IosConfig::class.java)

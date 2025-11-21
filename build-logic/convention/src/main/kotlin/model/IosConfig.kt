@@ -1,6 +1,6 @@
 package model
 
-import CommonVersionsExtension
+import KommonVersionsExtension
 
 data class IosSchemaConfig(
     val schemaName: String,
@@ -45,7 +45,7 @@ class IosConfigBuilder {
     var currentVersion: String = ""
 }
 
-fun CommonVersionsExtension.ios(
+fun KommonVersionsExtension.ios(
     block: IosConfigBuilder.() -> Unit
 ): IosConfig {
     val builder = IosConfigBuilder().apply(block)

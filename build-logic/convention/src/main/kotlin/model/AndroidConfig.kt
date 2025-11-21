@@ -1,6 +1,6 @@
 package model
 
-import CommonVersionsExtension
+import KommonVersionsExtension
 
 data class AndroidConfig(
     val namespace: String,
@@ -50,7 +50,7 @@ fun AndroidConfigBuilder.flavor(
     )
 }
 
-fun CommonVersionsExtension.android(
+fun KommonVersionsExtension.android(
     block: AndroidConfigBuilder. () -> Unit
 ): AndroidConfig {
     val builder = AndroidConfigBuilder().apply(block)
