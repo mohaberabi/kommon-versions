@@ -1,4 +1,4 @@
-# 📦KommonVersions (KMP Common Versions Plugin)
+# KommonVersions (KMP Common Versions Plugin)
 
 ### A Unified Versioning, Flavor, and Build Metadata System for Kotlin Multiplatform (Android + iOS)
 
